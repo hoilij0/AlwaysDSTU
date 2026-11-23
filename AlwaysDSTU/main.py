@@ -2,11 +2,13 @@
 
 from __future__ import annotations
 
+import sys
 import threading
 import tkinter as tk
 from collections import Counter
 from dataclasses import replace
 from datetime import date, datetime, timedelta
+from pathlib import Path
 from tkinter import messagebox, ttk
 
 from database import (
@@ -32,6 +34,7 @@ BACKGROUND = "#F4F6FA"
 TEXT = "#17243A"
 MUTED = "#62738D"
 GREEN = "#20875B"
+ICON_DIR = Path(__file__).resolve().parent / "assets"
 
 THEMES = {
     "light": {
@@ -53,6 +56,35 @@ THEMES = {
         "cancelled_fg": "#FFC0C0", "changed_bg": "#293D59", "changed_fg": "#D3E6FF",
     },
 }
+
+
+def _apply_window_icon(root: tk.Tk | tk.Toplevel) -> None:
+    """Задаёт иконку всем окнам; отсутствие ресурса не мешает запуску."""
+    try:
+        if sys.platform == "win32":
+            icon = ICON_DIR / "icon.ico"
+            if icon.is_file():
+                root.iconbitmap(default=str(icon))
+                root.iconbitmap(str(icon))
+        else:
+            icon = ICON_DIR / "icon.png"
+            if icon.is_file():
+                root._always_dstu_icon = tk.PhotoImage(file=str(icon))
+                root.iconphoto(True, root._always_dstu_icon)
+    except (tk.TclError, OSError):
+        # Иконка необязательна для работы расписания и локальной базы.
+        pass
+
+
+def _configure_windows_taskbar() -> None:
+    """Не даёт Windows объединять окно приложения со значком Python."""
+    if sys.platform != "win32":
+        return
+    try:
+        import ctypes
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("AlwaysDSTU.Schedule.Desktop")
+    except (AttributeError, OSError):
+        pass
 
 
 class AlwaysDSTUApp:
@@ -95,6 +127,7 @@ class AlwaysDSTUApp:
 
     def _configure_window(self) -> None:
         self.root.title("Always DSTU — расписание ДГТУ")
+        _apply_window_icon(self.root)
         self.root.geometry("1160x740")
         self.root.minsize(940, 600)
         self.root.configure(background=BACKGROUND)
@@ -592,6 +625,7 @@ class AlwaysDSTUApp:
             return
         p = self.palette
         dialog = tk.Toplevel(self.root)
+        _apply_window_icon(dialog)
         dialog.title("Настройте приложение" if first_run else "Профиль и настройки")
         dialog.geometry("500x520")
         dialog.minsize(460, 490)
@@ -690,6 +724,7 @@ class AlwaysDSTUApp:
         if self.busy or self.group_search_open:
             return
         dialog = tk.Toplevel(self.root)
+        _apply_window_icon(dialog)
         dialog.title("Поиск учебной группы")
         dialog.geometry("460x480")
         dialog.minsize(380, 340)
@@ -1021,6 +1056,7 @@ class AlwaysDSTUApp:
 
         p = self.palette
         dialog = tk.Toplevel(self.root)
+        _apply_window_icon(dialog)
         dialog.title("Заметка к занятию")
         dialog.geometry("560x500")
         dialog.minsize(480, 360)
@@ -1163,6 +1199,7 @@ class AlwaysDSTUApp:
             )
             return
         dialog = tk.Toplevel(self.root)
+        _apply_window_icon(dialog)
         dialog.title("Другие сохранённые заметки")
         dialog.geometry("700x440")
         dialog.transient(self.root)
@@ -1336,6 +1373,7 @@ class AlwaysDSTUApp:
         previous = versions[1] if len(versions) > 1 else None
         p = self.palette
         dialog = tk.Toplevel(self.root)
+        _apply_window_icon(dialog)
         dialog.title("Аналитика расписания")
         dialog.geometry("900x590")
         dialog.minsize(760, 500)
@@ -1616,6 +1654,7 @@ class AlwaysDSTUApp:
 
 
 def main() -> None:
+    _configure_windows_taskbar()
     root = tk.Tk()
     AlwaysDSTUApp(root)
     root.mainloop()

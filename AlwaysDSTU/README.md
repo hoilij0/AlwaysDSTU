@@ -45,10 +45,10 @@ python setup_database.py
 
 На этом ноутбуке можно дважды щёлкнуть **`Always DSTU.exe`** в папке `AlwaysDSTU`. Это небольшой Windows-запускатель: он открывает актуальный `main.py` из той же папки через локальное окружение `.venv`, поэтому программа использует последние изменения кода. Не переносите один `.exe` отдельно: для работы нужны файлы проекта, настроенное окружение Python и работающая PostgreSQL. Это не автономный установщик и не готовый пакет для других компьютеров.
 
-Запускатель создаётся локально и не добавляется в Git. Исходный код — `launcher.cs`; при наличии стандартного компилятора .NET Framework его можно пересобрать из корня проекта:
+Запускатель создаётся локально и не добавляется в Git. Исходный код — `launcher.cs`; иконка для EXE и окон находится в `AlwaysDSTU/assets/icon.ico`, её исходное изображение — `icon.png`. При наличии стандартного компилятора .NET Framework запускатель с иконкой можно пересобрать из корня проекта:
 
 ```powershell
-& 'C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe' /nologo /target:winexe /codepage:65001 /reference:System.Windows.Forms.dll '/out:AlwaysDSTU\Always DSTU.exe' 'AlwaysDSTU\launcher.cs'
+& 'C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe' /nologo /target:winexe /codepage:65001 /reference:System.Windows.Forms.dll '/win32icon:AlwaysDSTU\assets\icon.ico' '/out:AlwaysDSTU\Always DSTU.exe' 'AlwaysDSTU\launcher.cs'
 ```
 
 Альтернативно приложение можно запустить из командной строки после активации окружения:

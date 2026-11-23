@@ -155,6 +155,23 @@ class GuiScenarioTests(unittest.TestCase):
         self.after_patch.stop()
         self.repo_patch.stop()
 
+    @unittest.skipUnless(os.name == "nt", "Windows icon test")
+    def test_window_and_note_dialog_have_windows_icons(self):
+        import ctypes
+        from ctypes import wintypes
+
+        user32 = ctypes.windll.user32
+        user32.GetParent.argtypes = [wintypes.HWND]
+        user32.GetParent.restype = wintypes.HWND
+        user32.SendMessageW.argtypes = [wintypes.HWND, wintypes.UINT, wintypes.WPARAM, wintypes.LPARAM]
+        user32.SendMessageW.restype = ctypes.c_ssize_t
+        self.app.open_note_editor(self.app.entries[0])
+        dialog = next(widget for widget in self.root.winfo_children() if isinstance(widget, tk.Toplevel))
+        self.root.update_idletasks()
+        for window in (self.root, dialog):
+            hwnd = user32.GetParent(window.winfo_id())
+            self.assertTrue(user32.SendMessageW(hwnd, 0x007F, 1, 0), "Значок окна не установлен")
+
     def _open_note(self):
         self.app.open_note_editor(self.app.entries[0])
         dialog = next(widget for widget in self.root.winfo_children() if isinstance(widget, tk.Toplevel))
