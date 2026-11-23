@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Канбан-доска Always DSTU</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 32px; background: #f2f5fa; color: #17243a; font: 15px/1.4 'Segoe UI', sans-serif; }
+    main { max-width: 1450px; margin: auto; }
+    h1 { margin: 0 0 6px; font-size: 28px; }
+    .intro { color: #526681; margin: 0 0 24px; }
+    .board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; align-items: start; }
+    section { background: #e8eef7; border-radius: 14px; padding: 16px; }
+    h2 { margin: 0 0 14px; font-size: 19px; }
+    article { background: white; border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; border-left: 4px solid #7896c0; }
+    article:last-child { margin-bottom: 0; }
+    .doing article { border-color: #e7aa36; }
+    .done article { border-color: #32a36d; }
+    .tag { color: #516c91; font-size: 12px; font-weight: 600; display: block; margin-bottom: 4px; }
+    .small { font-size: 13px; color: #526681; margin: 20px 0 0; }
+    @media(max-width: 800px) { body { padding: 18px; } .board { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body><main>
+  <h1>Always DSTU — Канбан-доска</h1>
+  <p class="intro">Состояние проекта на этапе ЛР6 · Настольный прототип · ВИС32</p>
+  <div class="board">
+    <section><h2>Очередь</h2>
+      <article><span class="tag">Инфраструктура</span>Подготовить Android-версию после согласования настольного прототипа</article>
+      <article><span class="tag">ЛР7 · тестирование</span>Провести три ручных теста и оформить результаты</article>
+      <article><span class="tag">ЛР7 · документация</span>Собрать итоговую пояснительную записку</article>
+    </section>
+    <section class="doing"><h2>В работе</h2>
+      <article><span class="tag">ФЗ-01–ФЗ-05 · ЛР6</span>Подготовить отчёт с демонстрацией рабочего сценария</article>
+      <article><span class="tag">ФЗ-02 · синхронизация</span>Проверить работу с API и кэшем на компьютерах участников</article>
+      <article><span class="tag">ФЗ-03 · интерфейс</span>Согласовать с преподавателем показ заметки на карточке вместо таблицы</article>
+      <article><span class="tag">Команда</span>Проверить чистую установку и запуск проекта у участников</article>
+    </section>
+    <section class="done"><h2>Готово</h2>
+      <article><span class="tag">ЛР4 · ФЗ-01, ФЗ-02</span>Спроектировать и создать таблицы PostgreSQL</article>
+      <article><span class="tag">ЛР5 · инфраструктура</span>Создать и запустить настольный каркас приложения</article>
+      <article><span class="tag">ФЗ-01, ФЗ-02</span>Выбрать группу, получать расписание и сохранять снимок в кэш</article>
+      <article><span class="tag">ФЗ-03</span>Показать неделю и карточки занятий выбранного дня</article>
+      <article><span class="tag">ФЗ-01–ФЗ-04</span>Добавить, показать, изменить и удалить локальную заметку</article>
+      <article><span class="tag">ФЗ-05</span>Рассчитать нагрузку и показать изменения расписания</article>
+    </section>
+  </div>
+  <p class="small">Доска хранится в репозитории. Чтобы обновить статус, перенесите соответствующий блок article в нужную секцию файла KANBAN.html и внесите изменение в Git. Метки «Готово» означают реализованный настольный прототип, а не итоговую приёмку проекта.</p>
+</main></body>
+</html>

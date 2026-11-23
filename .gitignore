@@ -3,3 +3,12 @@
 
 # Временные файлы Microsoft Office.
 ~$*.docx
+
+# Python и локальная конфигурация приложения.
+__pycache__/
+*.py[cod]
+.venv/
+.env
+
+# Локально собранный Windows-запускатель, исходник находится в AlwaysDSTU/launcher.cs.
+/AlwaysDSTU/Always DSTU.exe
